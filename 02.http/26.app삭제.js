@@ -65,45 +65,43 @@ http.createServer((req,res) => {
             }
             break;
         case '/update':
-            if(req.method === 'GET'){
-                fs.readdir('data', (err,files) => {
+            if (req.method === 'GET') {
+                fs.readdir('data', (err, files) => {
                     const title = `${query.id} 수정`;
                     const list = template.listGen(files);
                     const filename = `data/${query.id}.txt`;
                     fs.readFile(filename, 'utf8', (err, data) => {
-                        const content = template.updateForm(query.id, data);
+                        const content = template.updateForm(query.id, data)
                         const html = view.index(title, list, content, ' ');
                         res.end(html);
-                    });   
+                    });
                 });
-            } else{
+            } else {
                 let body = '';
                 req.on('data', data => {
-                    body +=data;
+                    body += data;
                 });
                 req.on('end', () => {
                     const param = qs.parse(body);
-                    if (param.title.trim().length==0){
-                        res.writeHead(302, {'Location' : `/`});
+                    if (param.title.trim().length == 0) {           // 제목이 white space인 경우, 수정하지 않음
+                        res.writeHead(302, {'Location': '/'});
                         res.end();
-                    }else {
-                        const fname= `data/${param.title}.txt`;
+                    } else {
+                        const fname = `data/${param.title}.txt`;
                         fs.writeFile(fname, param.content, err => {
-                            if(param.original != param.title) { //제목이 변경된 경우
-                                fs.unlink(`data/${param.original}.txt`, err =>{
-                                    res.writeHead(302, {'Location' : `/?id=${param.title}`});
-                                    res.end(); 
+                            if (param.original != param.title) {    // 제목이 변경된 경우
+                                fs.unlink(`data/${param.original}.txt`, err => {
+                                    res.writeHead(302, {'Location': `/?id=${param.title}`});
+                                    res.end();
                                 });
-                            }else{
-                                res.writeHead(302, {'Location' : `/?id=${param.title}`});
-                                res.end(); 
-                            };
-                        });
-                        
-                    };
-                    
+                            } else {
+                                res.writeHead(302, {'Location': `/?id=${param.title}`});
+                                res.end();
+                            }
+                        })
+                    }
                 });
-            };
+            }
             break;
         case '/delete':
             fs.readdir('data', (err,files) => {
