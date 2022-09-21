@@ -15,15 +15,15 @@ module.exports = {
     buttonGen : function(title) {
         if (title === undefined){   //홈 화면, 생성만 가능
             return `
-                <button onclick="location.herf='/create">생성</button>
+                <button onclick="location.href='/create'">생성</button>
                 <button disabled="disabled">수정</button>
                 <button disabled="disabled">삭제</button>
             `;
         }else{                      // 조회 화면, 생성/수정/삭제 가능
             return `
-                <button onclick="location.herf='/create'">생성</button>
-                <button onclick="location.herf='/update'">수정</button>
-                <button onclick="location.herf='/delete'">삭제</button>
+                <button onclick="location.href='/create'">생성</button>
+                <button onclick="location.href='/update'">수정</button>
+                <button onclick="location.href=='/delete'">삭제</button>
             `;
         }
         

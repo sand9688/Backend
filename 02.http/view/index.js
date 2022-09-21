@@ -18,7 +18,7 @@ exports.index = function(title,list,content,control){
         ${content}  <!--22.app조회.js에서 변경 -->
     </p>
     <hr>
-        ${control}
+        ${control} <!--24.app생성.js에서 변경 -->
 </body>
 </html>`;
 }
