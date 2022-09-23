@@ -117,8 +117,10 @@ SELECT continent, COUNT(*) FROM country
 
 
 #대륙별로 국가숫자, GNP의 합, 평균 국가별 GNP
-SELECT continent, COUNT(*), SUM(GNP), AVG(GNP) FROM country
+SELECT continent, COUNT(*), round(SUM(GNP)), round(AVG(GNP)) FROM country
 	GROUP BY continent ORDER BY COUNT(*) DESC;
+-- round() => 소숫점 자리 날림
+--round(,-3) => 천의 자리 까지 날리고 000으로 채움
 
 # 아시아 대륙에서 인구가 가장 많은 도시 10개를 내림순으로 보여줄 것
 #(대륙명, 국가명, 도시명, 인구수)
@@ -131,5 +133,108 @@ SELECT country.Continent, country.Name , city.Name , city.Population FROM city
 SELECT city.Name, city.Population, countrylanguage.`Language` FROM city
 	JOIN countrylanguage ON city.CountryCode = countrylanguage.CountryCode AND countrylanguage.IsOfficial = 'T'
 	GROUP BY city.Name ORDER BY  city.Population DESC LIMIT 10;
+--
+
+SELECT c.Name, c.Population, l.`Language` FROM city AS c
+	JOIN countrylanguage AS l ON c.CountryCode = l.CountryCode
+	WHERE l.IsOfficial = 'T'
+	ORDER BY c.Population DESC
+	limit 10
+
+--update 테이블명
+--	set 필드명 =값, 필드명 = 값, ....
+--	where 조건;
+UPDATE city
+	SET NAME='Gwangju', district = 'Gwangju'
+	WHERE id=2336;		
+	
+SELECT * FROM city WHERE NAME = 'gwangju' 
 
 
+-- key
+-- primary key(기본키)
+#전람남도 도시의 인구를 20만으로 변경
+UPDATE city
+	SET population = 200000
+	WHERE district = 'chollanam';
+
+
+--insert into	테이블명
+--	(필드명)				# 필드명을 사용하면 일부 필드만 데이터 추가, 사용하지 않으면 모든 필드에 데이터 추가
+--	values (필드명에 대한 값)
+
+INSERT INTO city
+	(NAME, countrycode, district, population)
+	VALUES ('Haenam','KOR','Chollanam', 100000);
+
+INSERT INTO city
+	VALUES (DEFAULT, 'Jangsung', 'KOR','Chollanam', 100000);
+
+
+UPDATE city, (SELECT * FROM city WHERE district='Chollanam') b
+	SET city.Population = b.population + 50000
+	WHERE city.id=b.id;
+
+delete from 테이블명
+	where 조건
+
+#테이블의 모든 데이터 삭제
+TRUNCATE TABLE [테이블명]
+#테이블의 이름 변경
+RENAME TABLE tigers TO kia_tigers;
+
+
+ALTER TABLE kia_tigers
+	#칼럼 추가
+	ADD isDeleted INT DEFAULT 0;
+	#칼럼 이름 바꾸기
+	CHANGE `POSITION` `position` VARCHAR(10);
+SELECT * FROM kia_tigersworld
+
+
+CREATE TABLE gis.test(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+	NAME VARCHAR(10)test
+) AUTO_INCREMENT=100;
+
+
+
+# inner join
+SELECT song.sid, girl_group.name, girl_group.debut, song.title, song.lyrics  
+	FROM girl_group									#left
+	JOIN song 										#right
+	ON song.sid = girl_group.hit_song_id 
+
+
+# left outer join
+SELECT song.sid, girl_group.name, girl_group.debut, song.title, song.lyrics  
+	FROM song									#left
+	LEFT outer JOIN girl_group 							#right
+	ON song.sid = girl_group.hit_song_id 
+
+
+
+# right outer join
+SELECT song.sid, girl_group.name, girl_group.debut, song.title, song.lyrics  
+	FROM song									#left
+	RIGHT outer JOIN girl_group 							#right
+	ON song.sid = girl_group.hit_song_id 
+
+
+# full outer join
+SELECT song.sid, girl_group.name, girl_group.debut, song.title, song.lyrics  
+	FROM song									#left
+	LEFT outer JOIN girl_group 							#right
+	ON song.sid = girl_group.hit_song_id
+UNION
+SELECT song.sid, girl_group.name, girl_group.debut, song.title, song.lyrics  
+	FROM song									#left
+	RIGHT outer JOIN girl_group 							#right
+	ON song.sid = girl_group.hit_song_id 
+
+#데뷔 일짜가 빠른  5개의 걸그룹의 히트송은(그룹명, 곡명)
+SELECT girl_group.name, song.title ,girl_group.debut
+	FROM girl_group
+	JOIN song
+	ON girl_group.hit_song_id = song.sid
+	ORDER BY girl_group.debut LIMIT 5; 
