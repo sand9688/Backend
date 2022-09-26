@@ -1,6 +1,7 @@
 # Prac wrote
 tmp/
 tmp.html
+*.json
 
 # Logs
 logs
