@@ -63,8 +63,39 @@ module.exports = {
             callback();
         });
         conn.end();
-    }
-        
-
-
+    },
+    getPlayersByPosition : function(params, callback){
+        const conn =this.getConnection();
+        const sql = `SELECT * FROM kia_tigers WHERE POSITION = ? AND isDeleted = 0`
+        conn.query(sql, params, (err,rows,fields) =>{
+            if (err)
+                throw err;
+            callback(rows);
+        });
+        conn.end();
+    },
+    getPlyaersOrderByBackNo: function(order, callback){
+        const conn = this.getConnection();
+        let sql = `SELECT *FROM kia_tigers isDeleted = 0 ORDER BY backNo`;
+        sql += (order == 1 ) ? 'DESC;': ';'
+        conn.query(sql, (err,rows,fields)=> {
+            if (err)
+                throw err;
+            callback(rows);
+        });
+        conn.end();
+    },
+    getPlayersOrder : function(fields, order, callback){
+        const conn =  this.getConnection();
+        let sql = `SELCT * FROM kia_tigers isDeleted = 0 ORDER BY ${fields}`;
+        sql += (order ==1 ) ?  'DESC;':';' ;
+        conn.query(sql, (err,rows,fields)=> {
+            if (err)
+                throw err;
+            callback(rows);
+        });
+        conn.end();
+    },
+    
 }
+        
