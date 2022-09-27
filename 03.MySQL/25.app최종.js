@@ -1,6 +1,6 @@
 const http = require('http');
 const url = require('url');
-const mysql = require('mysql');
+const dm= require('./db-module');
 const config = require('./mysql.json');
 const template = require('./view/template');
 const qs = require('querystring');
@@ -10,21 +10,12 @@ http.createServer((req,res) => {
     let query =url.parse(req.url, true).query;
     switch(pathname) {
         case'/' :       //초기 홈 화면
-            const conn = mysql.createConnection(config);
-            conn.connect();
-            const sql =`SELECT * FROM kia_tigers WHERE isDeleted = 0 ;`;
-            conn.query(sql, (err, rows ,fields) => {
-                if (err)
-                    throw err
+            dm.getList(rows => {
                 let trs = template.trsGen(rows);
                 let html =  template.home(trs);
                 res.end(html);
-            })
-            conn.end();
+            });
             break
-        default:
-            res.writeHead(404, {'Content-Type': 'text/html'});
-            res.end();
         case '/create' :
             if (req.method == 'GET'){ //입력 폼 보여주기
                 let html = template.createForm();
@@ -39,40 +30,25 @@ http.createServer((req,res) => {
                     let player = param.player;
                     let backNo = parseInt(param.backNo);
                     let position = param.position;
-
-                    const conn = mysql.createConnection(config);
-                    conn.connect();
-                    const sql =`
-                    INSERT INTO kia_tigers(player, backNo, POSITION)
-                        VALUES (?, ?, ?);`;
-                    conn.query(sql, [player,backNo,position], (err,fields) => {
-                        if (err)
-                            throw err;
+                    
+                    dm.insertPlayer([player,backNo,position], () =>{
                         res.writeHead(302, {'Location': `/`});
                         res.end();
-
                     });
-                    conn.end();
-                    });
+                });
             };
             break;
+
         case '/update':
             if(req.method == 'GET'){      //수정 입력할 폼
                 let id = parseInt(query.id);
-                const conn = mysql.createConnection(config);
-                conn.connect();
-                const sql =`SELECT * FROM kia_tigers WHERE id=? AND isDeleted = 0 ;`;
-                conn.query(sql, id, (err, rows ,fields) => {
-                    if (err)
-                        throw err
+                dm.getPlayer(id, rows => {
                     const player = rows[0].player;
                     const backNo = rows[0].backNo;
                     const position = rows[0].position;
                     const html = template.updateForm(id, player, backNo, position);
                     res.end(html);
                 });
-                conn.end();
-
             }else{                          // DB에 수정 하는 것
                 let body = '';
                 req.on('data', data => {
@@ -85,19 +61,10 @@ http.createServer((req,res) => {
                     let backNo = parseInt(param.backNo);
                     let position = param.position;
 
-                    const conn = mysql.createConnection(config);
-                    conn.connect();
-                    const sql =`
-                    UPDATE kia_tigers SET player=?, backNo=?, POSITION=?
-                        WHERE id=?;`;
-                    conn.query(sql, [player,backNo,position, id], (err,fields) => {
-                        if (err)
-                            throw err;
+                    dm.updatePlayer([player,backNo,position,id],() =>{
                         res.writeHead(302, {'Location': `/`});
                         res.end();
-
                     });
-                    conn.end();
                 });
             }
             break;
@@ -107,23 +74,16 @@ http.createServer((req,res) => {
             res.end(html);
             break;
         case '/deleteConfirm':{
-            const id = parseInt(query.id); 
-            const conn = mysql.createConnection(config);
-            conn.connect();
-            const sql =`UPDATE kia_tigers SET isDeleted=1 WHERE id=?;`;
-            conn.query(sql, [id], (err,fields) => {
-                if (err)
-                    throw err;
+            const id = parseInt(query.id);
+            dm.deletePlayerConfirm(id,() => {
                 res.writeHead(302, {'Location': `/`});
                 res.end();
-                });
-            conn.end();
-            }
-            
-
-
-            ;
+            }); 
+            };
             break;
+        default:
+            res.writeHead(404, {'Content-Type': 'text/html'});
+            res.end();
 
     }
 }).listen(3000, () =>{

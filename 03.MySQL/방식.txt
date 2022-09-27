@@ -1,0 +1,8 @@
+Model - View - Control (MVC)
+
+
+Model : DB, Biz.logic, 인공지능
+
+View : 화면
+
+Control : Routing, Parameter 정리
