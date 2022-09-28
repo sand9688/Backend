@@ -5,9 +5,10 @@ module.exports = {
     getConnection: function(){
         const conn = mysql.createConnection(config);
         conn.connect(err => {
-            if (err)
+            if (err){
                 console.log('mysql connection err');
                 console.log(err)
+            };
         });
         return conn;
     },
