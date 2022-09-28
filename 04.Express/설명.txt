@@ -44,6 +44,24 @@ routes
     views/*.ejs
 
 
+웹페이지 제작 시 필요 dir
+
+server.js
+    -public
+        -js
+        -css
+        -img
+    -views
+        -*.ejs
+        -*.html
+    -routes
+        -router
+    -db
+        -db-module.js
+
+
+
+
 
 
 
