@@ -31,7 +31,9 @@ app.get('/file',(req,res)=> {
 });
 app.post('/file', upload.single('image'), (req,res)=>{
     const comment = req.body.comment;
-    res.send(`<h1>comment : ${comment}</h1>`);
+    console.log(req.file);
+    res.send(`<h1>comment : ${comment}</h1>
+                <h1>filename : ${req.file.filename}</h1>`);
 });
 // Status code 404
 app.get('*', (req, res) => {
