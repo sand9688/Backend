@@ -54,7 +54,7 @@ module.exports = {
         });
         conn.end();
     },
-    deletePlayerConfirm: function(params,callback){
+    deletePlayer: function(params,callback){
         const conn = this.getConnection();
         const sql =`UPDATE kia_tigers SET isDeleted=1 WHERE id=?;`;
         conn.query(sql, params, (err,fields) => {

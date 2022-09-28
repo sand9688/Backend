@@ -68,13 +68,13 @@ app.get('/delete', (req,res) => {
     const html = template.deleteForm(id);
     res.send(html);
 });
-app.post('/deleteConfirm',(req,res) => {
-    const id = parseInt(req.query.id)
-    dm.deletePlayerConfirm(id, ()=>{
+app.get('/deleteConfirm', (req, res) => {
+    const id = parseInt(req.query.id);
+    dm.deletePlayer(id, () => {
         res.redirect('/');
     });
-
 });
+
 
 
 
