@@ -1,0 +1,53 @@
+log (logging)
+    1.어디다 쓸거냐?
+        -consoel,file,db, ...
+
+    2.어느 레벨로 기록할 것인가?
+        - error , warning, info, debug,  trce, ...
+
+    3.어떤 형식으로 보여줄 것인가?
+
+    개발 시점
+        consoel
+            - debug
+
+    서비스할 경우
+        consoel 
+            - warning
+
+        file
+            - info    
+
+routes
+    주소                                라우팅                   파일명
+    localhost:3000/                     app                     server.js                   
+
+    localhost:3000/bbs/list             bbsRouter               bbsRouter,js
+    localhost:3000/bbs/write
+    localhost:3000/bbs/update
+    ...
+
+
+    localhost:3000/user/list              userRouter            userRouter.js
+    localhost:3000/user/register
+    localhost:3000/user/update
+    ...
+
+    localhost:3000/shopping/list        shoppingRouter          shoppingRouter.js
+    localhost:3000/shopping/cart
+    ...
+
+
+    db-module
+
+
+    views/*.ejs
+
+
+
+
+
+
+
+
+
