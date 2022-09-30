@@ -61,7 +61,7 @@ module.exports = {
         conn.query(sql, params, (err,fields) => {
             if (err)
                 throw err;
-            callback();
+            callback(params);
         });
         conn.end();
     },

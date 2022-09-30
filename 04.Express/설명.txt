@@ -61,6 +61,15 @@ server.js
 
 
 
+EJS  : Extended java script
+
+ <%=  %> : value, 출력                ex)player,
+ <%  %> : expression
+
+html code 안에 js code를 끼워 넣는 것
+
+일반 html5 = html + js 
+
 
 
 
