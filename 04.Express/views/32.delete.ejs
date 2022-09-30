@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<%- include(`${path}/head`) %>
+        <body>
+            <script>
+                let answer = confirm('Are you sure to delete?')
+                if (answer)
+                    location.href ='/deleteConfirm/<%= id %>'
+                else
+                    location.href ='/'
+            </script>
+        </body>
+    </html>
