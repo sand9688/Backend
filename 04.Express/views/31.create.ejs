@@ -20,7 +20,7 @@
                 </a>
                 <ul class="navbar-nav">
                     <li class="nav-item" style="margin-left: 100px;">
-                        <a class="nav-link" href="/create">추가<i class="fa-solid fa-user-plus"></i></a>
+                        <a class="nav-link" href="/">홈으로<i class="fa-solid fa-house"></i></a>
                     </li>
                 </ul>
             </div>
@@ -29,31 +29,29 @@
 
     <div class="container mt-3">
         <div class="row">       <!-- Grid 적용 -->
-            <div class="col-2"></div>
-            <div class="col-8">
-                <table class="table">
-                    <tr>
-                        <th>ID</th>
-                        <th>선수명</th>
-                        <th>사진</th>
-                        <th>백넘버</th>
-                        <th>&nbsp;&nbsp;포지션&nbsp;&nbsp;</th>
-                        <th>수정/삭제</th>
-                    </tr>
-                    <% for(let row of rows) { %>
+            <div class="col-4"></div>
+            <div class="col-4">
+                <form action="/create" method = "post" enctype="multipart/form-data">
+                    <table class="table table-borderless">
                         <tr>
-                            <td><%= row.id %></td>
-                            <td><%= row.player %></td>
-                            <td><img src="/<%= row.player %>.jpg"  height="82" width="120" ></td>
-                            <td><%= row.backNo %> </td>
-                            <td><%= row.position %> </td>
-                            <td>
-                                <a href="/update/<%= row.id %>"><i class="fa-regular fa-pen-to-square"></i></a>&nbsp;
-                                <a href="/delete/<%= row.id %>"><i class="fa-solid fa-user-minus"></i></a>
+                            <td>사진</td><td><input type="file" name="image"></td>
+                        </tr>
+                        <tr>
+                            <td>선수명</td><td><input type="text" name="player"></td>
+                        </tr>
+                        <tr>
+                            <td>백넘버</td><td><input type="text" name="backNo"></td>
+                        </tr>
+                        <tr>
+                            <td>포지션</td><td><input type="text" name="position"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <button type="submit" class="btn btn-primary">추가</button>
                             </td>
                         </tr>
-                    <% } %>
-                </table>
+                    </table>
+                </form>
             </div>
             <div class="col-2"></div>
         </div>
